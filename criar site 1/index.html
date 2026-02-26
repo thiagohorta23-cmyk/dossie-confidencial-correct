@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise Comportamental Avançada</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',Arial,sans-serif;
+background:linear-gradient(135deg,#0f0f0f,#1c1c1c);
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+
+.container{
+background:#181818;
+padding:40px;
+border-radius:15px;
+width:95%;
+max-width:700px;
+box-shadow:0 0 40px rgba(0,0,0,0.6);
+animation:fadeIn 0.4s ease-in-out;
+}
+
+h1,h2{
+text-align:center;
+}
+
+button{
+padding:12px 25px;
+background:gold;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+margin-top:20px;
+}
+
+button:hover{
+transform:scale(1.05);
+background:#ffcc00;
+}
+
+.question{
+margin-bottom:25px;
+}
+
+select,input{
+width:100%;
+padding:10px;
+border-radius:8px;
+border:none;
+background:#2a2a2a;
+color:white;
+margin-top:8px;
+}
+
+.progress-bar{
+height:8px;
+background:#2a2a2a;
+border-radius:10px;
+overflow:hidden;
+margin:20px 0;
+}
+
+.progress{
+height:100%;
+width:0%;
+background:gold;
+transition:width 0.3s ease;
+}
+
+.hidden{
+display:none;
+}
+
+.plan{
+background:#222;
+padding:20px;
+border-radius:10px;
+margin-top:15px;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div id="start">
+<h1>Análise Comportamental Avançada</h1>
+<p>Responda com honestidade para gerar seu relatório estratégico.</p>
+<button onclick="startTest()">Iniciar Avaliação</button>
+</div>
+
+<div id="quiz" class="hidden">
+<h2>Questionário</h2>
+
+<div class="progress-bar">
+<div id="progress" class="progress"></div>
+</div>
+
+<div id="questionContainer"></div>
+
+<button onclick="nextQuestion()">Próxima</button>
+</div>
+
+<div id="lead" class="hidden">
+<h2>Quase pronto...</h2>
+<p>Digite seus dados para gerar seu relatório completo.</p>
+
+<input type="text" id="name" placeholder="Seu nome">
+<input type="email" id="email" placeholder="Seu melhor email">
+
+<button onclick="showResult()">Gerar Relatório</button>
+</div>
+
+<div id="result" class="hidden">
+<h2>Resultado Preliminar</h2>
+<p id="score"></p>
+<p id="classification"></p>
+
+<hr>
+
+<h3>Desbloqueie o Relatório Completo</h3>
+
+<div class="plan">
+<h4>Plano Básico — R$39,99</h4>
+<p>Análise resumida + 7 dias de suporte</p>
+<button>Selecionar</button>
+</div>
+
+<div class="plan">
+<h4>Plano Premium — R$130</h4>
+<p>Análise detalhada + recomendações estratégicas</p>
+<button>Selecionar</button>
+</div>
+
+<div class="plan">
+<h4>Plano Avançado — R$240</h4>
+<p>Dossiê completo + orientação personalizada por 7 dias</p>
+<button>Selecionar</button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+
+
+</script>
+<script src="script.js"></script>
+</body>
+</html>

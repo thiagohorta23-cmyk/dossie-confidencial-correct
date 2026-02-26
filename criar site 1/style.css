@@ -1,0 +1,88 @@
+body{
+margin:0;
+font-family: 'Segoe UI', Arial, sans-serif;
+background: linear-gradient(135deg,#0f0f0f,#1c1c1c);
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+
+.hero, #quiz, #result{
+width:100%;
+display:flex;
+justify-content:center;
+}
+
+.container{
+background:#181818;
+padding:40px;
+border-radius:15px;
+width:90%;
+max-width:700px;
+box-shadow:0 0 40px rgba(0,0,0,0.6);
+animation:fadeIn 0.5s ease-in-out;
+}
+
+h1,h2{
+margin-bottom:20px;
+}
+
+button{
+padding:12px 25px;
+background:gold;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+background:#ffcc00;
+}
+
+.question{
+margin-bottom:25px;
+text-align:left;
+}
+
+.question p{
+margin-bottom:8px;
+font-weight:500;
+}
+
+select{
+width:100%;
+padding:10px;
+border-radius:8px;
+border:none;
+background:#2a2a2a;
+color:white;
+}
+
+.hidden{
+display:none;
+}
+
+.progress-bar{
+height:8px;
+background:#2a2a2a;
+border-radius:10px;
+overflow:hidden;
+margin-bottom:25px;
+}
+
+.progress{
+height:100%;
+width:0%;
+background:gold;
+transition:width 0.3s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
