@@ -155,8 +155,27 @@ classification = "Risco Crítico";
 
 document.getElementById("classification").innerText =
 "Classificação: " + classification;
+async function testarFirebase() {
+  try {
+    const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
 
+    const docRef = await addDoc(collection(window.db, "teste"), {
+      mensagem: "Conexão funcionando!",
+      data: new Date()
+    });
+
+    console.log("Documento salvo com ID:", docRef.id);
+    alert("Firebase conectado com sucesso!");
+  } catch (error) {
+    console.error("Erro ao salvar:", error);
+    alert("Erro ao conectar Firebase");
+  }
+}
+
+// Executa automaticamente ao carregar
+window.addEventListener("load", testarFirebase);
 // Aqui já deixamos pronto para futura integração:
 console.log("Lead capturado:", { name, email, percentage });
 
 }
+
