@@ -44,9 +44,9 @@ let totalScore = 0;
 // ==============================
 
 function startTest(){
-document.getElementById("start").classList.add("hidden");
-document.getElementById("quiz").classList.remove("hidden");
-showQuestion();
+    document.getElementById("start").classList.add("hidden");
+    document.getElementById("quiz").classList.remove("hidden");
+    showQuestion();
 }
 
 // ==============================
@@ -54,21 +54,21 @@ showQuestion();
 // ==============================
 
 function showQuestion(){
-let q = questions[currentQuestion];
+    let q = questions[currentQuestion];
 
-document.getElementById("questionContainer").innerHTML = `
-<div class="question">
-<p>${currentQuestion+1}. ${q.text}</p>
-<select id="answer">
-<option value="0">Não observado</option>
-<option value="1">Leve</option>
-<option value="2">Moderado</option>
-<option value="3">Intenso</option>
-</select>
-</div>
-`;
+    document.getElementById("questionContainer").innerHTML = `
+    <div class="question">
+        <p>${currentQuestion+1}. ${q.text}</p>
+        <select id="answer">
+            <option value="0">Não observado</option>
+            <option value="1">Leve</option>
+            <option value="2">Moderado</option>
+            <option value="3">Intenso</option>
+        </select>
+    </div>
+    `;
 
-updateProgress();
+    updateProgress();
 }
 
 // ==============================
@@ -76,8 +76,8 @@ updateProgress();
 // ==============================
 
 function updateProgress(){
-let progressPercent = (currentQuestion / questions.length) * 100;
-document.getElementById("progress").style.width = progressPercent + "%";
+    let progressPercent = (currentQuestion / questions.length) * 100;
+    document.getElementById("progress").style.width = progressPercent + "%";
 }
 
 // ==============================
@@ -86,24 +86,19 @@ document.getElementById("progress").style.width = progressPercent + "%";
 
 function nextQuestion(){
 
-let answerElement = document.getElementById("answer");
+    let answerElement = document.getElementById("answer");
+    if(!answerElement) return;
 
-if(!answerElement){
-return;
-}
+    let value = parseInt(answerElement.value);
+    totalScore += value * questions[currentQuestion].weight;
 
-let value = parseInt(answerElement.value);
+    currentQuestion++;
 
-totalScore += value * questions[currentQuestion].weight;
-
-currentQuestion++;
-
-if(currentQuestion < questions.length){
-showQuestion();
-}else{
-finishQuiz(let idGerado = await salvarResultado(pontuacaoFinal, nivelRisco);
-console.log("ID da avaliação:", idGerado););
-}
+    if(currentQuestion < questions.length){
+        showQuestion();
+    } else {
+        finishQuiz();
+    }
 }
 
 // ==============================
@@ -111,90 +106,80 @@ console.log("ID da avaliação:", idGerado););
 // ==============================
 
 function finishQuiz(){
-document.getElementById("quiz").classList.add("hidden");
-document.getElementById("lead").classList.remove("hidden");
-document.getElementById("progress").style.width = "100%";
+    document.getElementById("quiz").classList.add("hidden");
+    document.getElementById("lead").classList.remove("hidden");
+    document.getElementById("progress").style.width = "100%";
 }
 
 // ==============================
-// GERAR RESULTADO
+// GERAR RESULTADO + SALVAR
 // ==============================
 
-function showResult(){
+async function showResult(){
 
-let name = document.getElementById("name").value;
-let email = document.getElementById("email").value;
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
 
-if(name.trim() === "" || email.trim() === ""){
-alert("Preencha nome e email para continuar.");
-return;
-}
+    if(name.trim() === "" || email.trim() === ""){
+        alert("Preencha nome e email para continuar.");
+        return;
+    }
 
-document.getElementById("lead").classList.add("hidden");
-document.getElementById("result").classList.remove("hidden");
+    document.getElementById("lead").classList.add("hidden");
+    document.getElementById("result").classList.remove("hidden");
 
-let maxScore = questions.reduce((sum,q)=>sum + (3*q.weight),0);
-let percentage = Math.round((totalScore / maxScore) * 100);
+    let maxScore = questions.reduce((sum,q)=>sum + (3*q.weight),0);
+    let percentage = Math.round((totalScore / maxScore) * 100);
 
-document.getElementById("score").innerText =
-"Nível de Risco Percebido: " + percentage + "%";
+    document.getElementById("score").innerText =
+        "Nível de Risco Percebido: " + percentage + "%";
 
-let classification = "";
+    let classification = "";
 
-if(percentage <= 30){
-classification = "Risco Baixo";
-}
-else if(percentage <= 60){
-classification = "Risco Moderado";
-}
-else if(percentage <= 80){
-classification = "Risco Alto";
-}
-else{
-classification = "Risco Crítico";
-}
+    if(percentage <= 30){
+        classification = "Risco Baixo";
+    }
+    else if(percentage <= 60){
+        classification = "Risco Moderado";
+    }
+    else if(percentage <= 80){
+        classification = "Risco Alto";
+    }
+    else{
+        classification = "Risco Crítico";
+    }
 
-document.getElementById("classification").innerText =
-"Classificação: " + classification;
-async function testarFirebase() {
-  try {
-    const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    document.getElementById("classification").innerText =
+        "Classificação: " + classification;
 
-    const docRef = await addDoc(collection(window.db, "teste"), {
-      mensagem: "Conexão funcionando!",
-      data: new Date()
+    await salvarResultado({
+        nome: name,
+        email: email,
+        pontuacao: percentage,
+        classificacao: classification
     });
 
-    console.log("Documento salvo com ID:", docRef.id);
-    alert("Firebase conectado com sucesso!");
-  } catch (error) {
-    console.error("Erro ao salvar:", error);
-    alert("Erro ao conectar Firebase");
-  }
+    console.log("Lead salvo com sucesso!");
 }
 
-// Executa automaticamente ao carregar
-window.addEventListener("load", testarFirebase);
-// Aqui já deixamos pronto para futura integração:
-  async function salvarResultado(pontuacao, nivelRisco) {
-  try {
-    const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+// ==============================
+// SALVAR NO FIREBASE
+// ==============================
 
-    const docRef = await addDoc(collection(window.db, "avaliacoes"), {
-      pontuacao: pontuacao,
-      nivel: nivelRisco,
-      data: new Date()
-    });
+async function salvarResultado(dados){
+    try {
 
-    console.log("Salvo com ID:", docRef.id);
-    return docRef.id;
+        const { collection, addDoc } =
+        await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
 
-  } catch (error) {
-    console.error("Erro ao salvar:", error);
-  }
-}
-console.log("Lead capturado:", { name, email, percentage });
+        await addDoc(collection(window.db, "avaliacoes"), {
+            ...dados,
+            data: new Date()
+        });
 
+    } catch (error) {
+        console.error("Erro ao salvar:", error);
+    }
 }
 
 
