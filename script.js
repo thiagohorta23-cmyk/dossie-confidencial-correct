@@ -114,6 +114,9 @@ function finishQuiz(){
 // ==============================
 // GERAR RESULTADO + SALVAR
 // ==============================
+// ==============================
+// GERAR RESULTADO + SALVAR (VERSÃO COMPLETA PREMIUM)
+// ==============================
 
 async function showResult(){
 
@@ -138,44 +141,105 @@ async function showResult(){
     let percentage = percentageBase;
 
     if (percentageBase < 85) {
-
         let proximidade = percentageBase / 85;
         let margemMaxima = 15 - (10 * proximidade);
         let aumento = Math.random() * margemMaxima;
 
         percentage = Math.round(percentageBase * (1 + aumento / 100));
 
-        if (percentage > 100) {
-            percentage = 100;
-        }
+        if (percentage > 100) percentage = 100;
     }
 
     document.getElementById("score").innerText =
         "Nível de Risco Percebido: " + percentage + "%";
 
+    // ==============================
+    // CLASSIFICAÇÃO
+    // ==============================
+
     let classification = "";
 
-    if(percentage <= 30){
-        classification = "Risco Baixo";
+    if(percentage <= 30) classification = "Risco Baixo";
+    else if(percentage <= 60) classification = "Risco Moderado";
+    else if(percentage <= 80) classification = "Risco Alto";
+    else classification = "Risco Crítico";
+
+    // ==============================
+    // INTENSIDADE DETALHADA
+    // ==============================
+
+    let intensidade = "";
+
+    if (percentage < 20) intensidade = "muito baixa";
+    else if (percentage < 40) intensidade = "baixa";
+    else if (percentage < 60) intensidade = "moderada";
+    else if (percentage < 75) intensidade = "considerável";
+    else if (percentage < 90) intensidade = "elevada";
+    else intensidade = "muito elevada";
+
+    // ==============================
+    // PROBABILIDADE TEXTUAL ESTRATÉGICA
+    // ==============================
+
+    let probabilidadeTextual = "";
+
+    if (percentage < 40){
+        probabilidadeTextual = "Existe uma baixa probabilidade de que essas mudanças indiquem algo mais profundo.";
     }
-    else if(percentage <= 60){
-        classification = "Risco Moderado";
-    }
-    else if(percentage <= 80){
-        classification = "Risco Alto";
+    else if (percentage < 75){
+        probabilidadeTextual = "Existe uma possibilidade real de que os comportamentos observados estejam indicando uma mudança relevante na dinâmica da relação.";
     }
     else{
-        classification = "Risco Crítico";
+        probabilidadeTextual = "Existe forte possibilidade de que os padrões identificados não sejam mera coincidência e mereçam atenção cuidadosa.";
     }
 
-    document.getElementById("classification").innerText =
-        "Classificação: " + classification;
+    // ==============================
+    // FRASE DE IMPACTO DINÂMICA
+    // ==============================
+
+    const frasesImpacto = [
+        "Nem toda mudança é inocente.",
+        "A dúvida costuma surgir antes da confirmação.",
+        "Quando padrões se repetem, raramente é por acaso.",
+        "Algo pode estar acontecendo — mesmo que ainda não esteja claro.",
+        "Ignorar sinais nem sempre faz eles desaparecerem."
+    ];
+
+    let fraseFinal = frasesImpacto[Math.floor(Math.random() * frasesImpacto.length)];
+
+    // ==============================
+    // TEXTO FINAL PERSONALIZADO + CTA
+    // ==============================
+
+    let analysisText = `
+        <strong>${name}</strong>, seu nível de risco percebido foi classificado como <strong>${classification}</strong>.<br><br>
+
+        A intensidade dos sinais identificados é considerada <strong>${intensidade}</strong> (${percentage}%).<br><br>
+
+        ${probabilidadeTextual}<br><br>
+
+        Este resultado não confirma nada de forma definitiva,
+        mas revela padrões que podem merecer observação mais atenta.<br><br>
+
+        <strong>${fraseFinal}</strong><br><br>
+
+        <button onclick="acaoEstrategica()" class="cta-button">
+            Quero entender melhor esses sinais
+        </button>
+    `;
+
+    document.getElementById("classification").innerHTML = analysisText;
+
+    // ==============================
+    // SALVAR NO FIREBASE
+    // ==============================
 
     await salvarResultado({
         nome: name,
         email: email,
         pontuacao: percentage,
-        classificacao: classification
+        classificacao: classification,
+        intensidade: intensidade
     });
 
     console.log("Lead salvo com sucesso!");
@@ -199,6 +263,9 @@ async function salvarResultado(dados){
     } catch (error) {
         console.error("Erro ao salvar:", error);
     }
+}
+function acaoEstrategica(){
+    alert("Em breve você poderá acessar uma análise mais aprofundada sobre esses sinais.");
 }
 
 
