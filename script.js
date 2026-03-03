@@ -129,7 +129,26 @@ async function showResult(){
     document.getElementById("result").classList.remove("hidden");
 
     let maxScore = questions.reduce((sum,q)=>sum + (3*q.weight),0);
-    let percentage = Math.round((totalScore / maxScore) * 100);
+
+    // ==============================
+    // CÁLCULO INTELIGENTE PROPORCIONAL
+    // ==============================
+
+    let percentageBase = Math.round((totalScore / maxScore) * 100);
+    let percentage = percentageBase;
+
+    if (percentageBase < 85) {
+
+        let proximidade = percentageBase / 85;
+        let margemMaxima = 15 - (10 * proximidade);
+        let aumento = Math.random() * margemMaxima;
+
+        percentage = Math.round(percentageBase * (1 + aumento / 100));
+
+        if (percentage > 100) {
+            percentage = 100;
+        }
+    }
 
     document.getElementById("score").innerText =
         "Nível de Risco Percebido: " + percentage + "%";
@@ -181,6 +200,7 @@ async function salvarResultado(dados){
         console.error("Erro ao salvar:", error);
     }
 }
+
 
 
 
