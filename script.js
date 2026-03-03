@@ -175,7 +175,25 @@ async function testarFirebase() {
 // Executa automaticamente ao carregar
 window.addEventListener("load", testarFirebase);
 // Aqui já deixamos pronto para futura integração:
+  async function salvarResultado(pontuacao, nivelRisco) {
+  try {
+    const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+
+    const docRef = await addDoc(collection(window.db, "avaliacoes"), {
+      pontuacao: pontuacao,
+      nivel: nivelRisco,
+      data: new Date()
+    });
+
+    console.log("Salvo com ID:", docRef.id);
+    return docRef.id;
+
+  } catch (error) {
+    console.error("Erro ao salvar:", error);
+  }
+}
 console.log("Lead capturado:", { name, email, percentage });
 
 }
+
 
