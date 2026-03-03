@@ -267,6 +267,43 @@ async function salvarResultado(dados){
 function acaoEstrategica(){
     alert("Em breve você poderá acessar uma análise mais aprofundada sobre esses sinais.");
 }
+// ==============================
+// PROVA SOCIAL DINÂMICA
+// ==============================
+
+function iniciarProvaSocial(){
+
+let viewers = Math.floor(Math.random() * 12) + 18; // 18 a 30 pessoas
+let buyers = Math.floor(Math.random() * 6) + 4; // 4 a 9 compras
+
+function atualizar(){
+
+// varia levemente os números
+viewers += Math.floor(Math.random() * 3) - 1;
+buyers += Math.random() > 0.7 ? 1 : 0;
+
+// limites mínimos
+if(viewers < 15) viewers = 15;
+
+document.getElementById("viewingCount").innerText =
+"👀 " + viewers + " pessoas estão analisando seus resultados agora";
+
+document.getElementById("purchaseCount").innerText =
+"🟢 " + buyers + " pessoas desbloquearam o Premium hoje";
+
+}
+
+// Atualiza a cada 4 segundos
+atualizar();
+setInterval(atualizar, 4000);
+}
+
+// Inicia quando resultado aparece
+setTimeout(() => {
+if(document.getElementById("result")){
+iniciarProvaSocial();
+}
+}, 1000);
 
 
 
