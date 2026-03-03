@@ -101,7 +101,8 @@ currentQuestion++;
 if(currentQuestion < questions.length){
 showQuestion();
 }else{
-finishQuiz();
+finishQuiz(let idGerado = await salvarResultado(pontuacaoFinal, nivelRisco);
+console.log("ID da avaliação:", idGerado););
 }
 }
 
@@ -195,5 +196,6 @@ window.addEventListener("load", testarFirebase);
 console.log("Lead capturado:", { name, email, percentage });
 
 }
+
 
 
