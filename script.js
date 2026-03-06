@@ -255,12 +255,30 @@ async function showResult() {
 // AÇÃO ESTRATÉGICA
 // ==============================
 
-function acaoEstrategica() {
-  if (avaliacaoIdAtual) {
-    alert("Sua avaliação foi registrada com sucesso. ID da avaliação: " + avaliacaoIdAtual);
-  } else {
-    alert("Sua avaliação foi gerada. Em breve você poderá continuar para o pagamento.");
+async function acaoEstrategica() {
+
+  if (!avaliacaoIdAtual) {
+    alert("Erro ao localizar avaliação.");
+    return;
   }
+
+  try {
+
+    const response = await fetch(
+      "http://127.0.0.1:5001/dossie-confidencial/us-central1/criarPagamento?avaliacaoId=" + avaliacaoIdAtual
+    );
+
+    const data = await response.json();
+
+    window.location.href = data.url;
+
+  } catch (error) {
+
+    console.error(error);
+    alert("Erro ao iniciar pagamento.");
+
+  }
+
 }
 
 // ==============================
@@ -284,6 +302,7 @@ async function salvarAvaliacaoCompleta(dados) {
     throw error;
   }
 }
+
 
 
 
